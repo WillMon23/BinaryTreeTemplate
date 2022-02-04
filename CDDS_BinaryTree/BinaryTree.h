@@ -10,30 +10,30 @@ class BinaryTree
 {
 public:
 
-	BinaryTree() {};
-	~BinaryTree() {};
+	BinaryTree();
+	~BinaryTree() { delete m_root; };
 
 	/// <summary>
 	/// Returns whether or not there are any nodes in the list
 	/// </summary>
-	bool isEmpty() {} const;
+	bool isEmpty() const;
 	/// <summary>
 	/// Creates a new node that stores the given value and places it into the tree
 	/// </summary>
 	/// <param name="value">The new value to add to the tree</param>
-	void insert(T value) {};
+	void insert(T value);
 	/// <summary>
 	/// Finds the node with the given value and removes it from the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for in the tree</param>
-	void remove(T value) {};
+	void remove(T value);
 	/// <summary>
 	/// Finds and returns a node with the given value in the tree
 	/// </summary>
 	/// <param name="value">The value of the node to search for</param>
-	TreeNode<T>* find(T value) {return nullptr;}
+	TreeNode<T>* find(T value);
 
-	void draw(TreeNode<T>* selected = nullptr) {}
+	void draw(TreeNode<T>* selected = nullptr);
 
 private:
 	/// <summary>
@@ -43,7 +43,7 @@ private:
 	/// <param name="nodeFound">A pointer that will store the address of the node that was found</param>
 	/// <param name="nodeParent">A pointer that will store the address of the parent of the node that was found</param>
 	/// <returns>Whether or not a node matching the value could be found</returns>
-	bool findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent) {}
+	bool findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent);
 
 	void draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected = nullptr);
 
@@ -51,6 +51,12 @@ private:
 };
 
 #endif
+
+template<typename T>
+inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent)
+{
+	return false;
+}
 
 template<typename T>
 inline void BinaryTree<T>::draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected)
@@ -102,11 +108,15 @@ inline bool BinaryTree<T>::isEmpty() const
 template<typename T>
 inline void BinaryTree<T>::insert(T value)
 {
+	if (find(value)->getData() == value)
+		return;
+
 	//Creats a new node that is going to be inserted 
-	TreeNode<T> newNode = new TreeNode<T>(value);
+	TreeNode<T>* newNode = new TreeNode<T>(value);
 	
 	//Creats a new current node from the root of the tree 
-	TreeNode<T> currentNode = m_root;
+	TreeNode<T>* currentNode = m_root;
+
 	
 	//Checks if there us a node in the root first
 	//If there is nothing in the current node 
@@ -114,7 +124,7 @@ inline void BinaryTree<T>::insert(T value)
 	{
 		//Set the current node to be the node 
 		m_root = newNode;
-		//then is breaks out if the function 
+		//then is breaks out of the function 
 		return;
 	}
 
@@ -126,11 +136,11 @@ inline void BinaryTree<T>::insert(T value)
 			//if the new node data is greater then the current node data 
 			if (newNode->getData() > currentNode->getData())
 				//Make that current node to be that current nodes right node
-				currentNode = currentNode.getRight();
+				currentNode = currentNode->getRight();
 			//. . . other wise 
 			else
 				//Make that current node to be that current nodes left node
-				currentNode = currentNode.getLeft();
+				currentNode = currentNode->getLeft();
 		}
 		//Set that current node location to be the new node 
 		currentNode = newNode;
@@ -140,11 +150,43 @@ inline void BinaryTree<T>::insert(T value)
 
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
+{	
+	TreeNode<T>* currentNode = find(value);
+
+	if (currentNode->getLeft() == nullptr && currentNode->getRight() == nullptr) 
+		delete currentNode;
+	
+}
+
+template<typename T>
+inline TreeNode<T>* BinaryTree<T>::find(T value)
 {
-	TreeNode<T> currentNode = m_root;
+	//Creats a variable easly exchange from the root
+	TreeNode<T>* currentNode = m_root;
 
-	while (currentNode.getData() != value)
+	//Cheaks to see if there is an actual value in the data node being created  
+	if (value == NULL)
+		//. . .Just make a new nood with the value of zero
+		return new TreeNode<T>(0);
+
+	//Loops until the current node has thw value that's being looked for 
+	while (currentNode->getData() != value)
 	{
-
+		//If the value in the current node is greater then the value 
+		if (currentNode->getData() > value)
+			//Make that currrentNode to be that node to the left of the currnt node
+			currentNode = currentNode->getLeft();
+		// else. . .
+		else
+			//Make that currrentNode to be that node to the right of the currnt node
+			currentNode = currentNode->getRight();
 	}
+
+	return currentNode;
+}
+
+template<typename T>
+inline void BinaryTree<T>::draw(TreeNode<T>* selected)
+{
+	draw(m_root, 400, 40, 400, selected);
 }

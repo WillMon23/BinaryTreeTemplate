@@ -81,6 +81,11 @@ inline void TreeNode<T>::draw(int x, int y, bool selected)
 }
 
 template<typename T>
+inline TreeNode<T>::TreeNode(T value)
+{
+}
+
+template<typename T>
 inline bool TreeNode<T>::hasLeft()
 {
 	//if there is node in the left node 
@@ -98,4 +103,10 @@ inline bool TreeNode<T>::hasRight()
 		return true;
 	//. . . other wise 
 	return false;
+}
+
+template<typename T>
+inline T TreeNode<T>::getData()
+{
+	return T();
 }
