@@ -10,7 +10,7 @@ class BinaryTree
 {
 public:
 
-	BinaryTree();
+	BinaryTree() {};
 	~BinaryTree() { delete m_root; };
 
 	/// <summary>
@@ -136,11 +136,11 @@ inline void BinaryTree<T>::insert(T value)
 			//if the new node data is greater then the current node data 
 			if (newNode->getData() > currentNode->getData())
 				//Make that current node to be that current nodes right node
-				currentNode = currentNode->getRight();
+				currentNode->setRight(newNode);
 			//. . . other wise 
 			else
 				//Make that current node to be that current nodes left node
-				currentNode = currentNode->getLeft();
+				currentNode->setLeft(newNode);
 		}
 		//Set that current node location to be the new node 
 		currentNode = newNode;
@@ -153,7 +153,7 @@ inline void BinaryTree<T>::remove(T value)
 {	
 	TreeNode<T>* currentNode = find(value);
 
-	if (currentNode->getLeft() == nullptr && currentNode->getRight() == nullptr) 
+	if (currentNode->hasLeft() && currentNode->hasRight()) 
 		delete currentNode;
 	
 }

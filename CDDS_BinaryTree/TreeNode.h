@@ -4,9 +4,9 @@ template<typename T>
 class TreeNode
 {
 public:
-	TreeNode() {};
-	TreeNode(T value);
-	~TreeNode() {};
+	TreeNode() { m_value = 0, m_left = nullptr, m_right = nullptr; };
+	TreeNode(T value) { m_value = value, m_left = nullptr, m_right = nullptr; };
+	~TreeNode() { delete m_right, m_left; };
 
 	/// <summary>
 	/// Returns whether or not this node has a left child
@@ -81,11 +81,6 @@ inline void TreeNode<T>::draw(int x, int y, bool selected)
 }
 
 template<typename T>
-inline TreeNode<T>::TreeNode(T value)
-{
-}
-
-template<typename T>
 inline bool TreeNode<T>::hasLeft()
 {
 	//if there is node in the left node 
@@ -108,5 +103,5 @@ inline bool TreeNode<T>::hasRight()
 template<typename T>
 inline T TreeNode<T>::getData()
 {
-	return T();
+	return m_value;
 }
