@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
             selectedNode = binaryTree.find(valueBoxValue);
         }
 
-        if (GuiButton(Rectangle{ 160, 60, 125, 30 }, GuiIconText(RICON_CROSS, "Remove")))
+        if (GuiButton(Rectangle{ 160, 60, 125, 30 }, GuiIconText(RICON_OK_TICK, "Remove")))
         {
             // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
             binaryTree.remove(valueBoxValue);
