@@ -55,6 +55,32 @@ private:
 template<typename T>
 inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent)
 {
+	//Creats a new current node from the root of the tree 
+	TreeNode<T>* currentNode = m_root;
+	
+	//Creats a parent holder node 
+	TreeNode<T>* parentNode;
+	
+	//Checks to see if a parent has been found 
+	bool parentFound = false;
+
+	//while the parent node is not found 
+	while (!parentFound)
+	{
+		if (currentNode->getData() > searchValue)
+			currentNode = currentNode->getRight();
+		else
+			currentNode = currentNode->getLeft();
+
+		if (currentNode->getLeft()->getData() == searchValue || currentNode->getLeft()->getData())
+		{
+			parentFound = currentNode;
+			parentFound = true;
+		}
+	}
+		if (find(searchValue) == nodeFound) && parentNode == nodeParent)
+		return true;
+
 	return false;
 }
 
@@ -134,7 +160,7 @@ inline void BinaryTree<T>::insert(T value)
 		if (newNode->getData() > currentNode->getData())
 		{
 			//Checks if there is a nullptr 
-			if (currentNode->getRight() == nullptr)
+			if (currentNode->getRight() == nullptr || !(currentNode->getRight()->getData() == value))
 			{//sets the right location to be the new node 
 				currentNode->setRight(newNode);
 				setNode = true;
@@ -147,7 +173,7 @@ inline void BinaryTree<T>::insert(T value)
 		//. . . other wise 
 		else if (newNode->getData() < currentNode->getData())
 		{
-			if (currentNode->getLeft() == nullptr)
+			if (currentNode->getLeft() == nullptr || !(currentNode->getLeft()->getData() == value))
 			{
 				currentNode->setLeft(newNode);
 				setNode = true;
