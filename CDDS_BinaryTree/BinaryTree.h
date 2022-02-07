@@ -99,7 +99,7 @@ inline bool BinaryTree<T>::isEmpty() const
 		//. . . retiurns true
 		return true;
 	//if there are only node on the roots but none on the left or right 
-	if (m_root->getLeft() == nullptr|| m_root->getRight() == nullptr)
+	if (m_root->hasLeft() || m_root->hasRight())
 		//. . . returns true
 		return true;
 	// other wise 
@@ -109,10 +109,13 @@ inline bool BinaryTree<T>::isEmpty() const
 template<typename T>
 inline void BinaryTree<T>::insert(T value)
 {
-	
+	bool setNode = false;
 
 	//Creats a new node that is going to be inserted 
 	TreeNode<T>* newNode = new TreeNode<T>(value);
+
+	if (find(value)->getData() == value)
+		return;
 	
 	//Creats a new current node from the root of the tree 
 	TreeNode<T>* currentNode = m_root;
@@ -124,57 +127,62 @@ inline void BinaryTree<T>::insert(T value)
 		//Set the current node to be the node 
 		m_root = newNode;
 		//then is breaks out of the function 
-		
 		return;
 	}
 
-	else
-	{
 		//While the current node does not equal nullptr
-		while (!currentNode->hasLeft() && !currentNode->hasRight())
+	while (!setNode)
+	{
+		//if the new node data is greater then the current node data 
+		if (newNode->getData() > currentNode->getData())
 		{
-			//if the new node data is greater then the current node data 
-			if (newNode->getData() > currentNode->getData())
-			{
-				//Checks if there is a nullptr 
-				if (currentNode->getRight() == nullptr)
-				{//sets the right location to be the new node 
-					currentNode->setRight(newNode);
-					//currentNode = currentNode->getRight();
-				}
-				// else 
-				else
-					currentNode = currentNode->getRight();
+			//Checks if there is a nullptr 
+			if (currentNode->getRight() == nullptr)
+			{//sets the right location to be the new node 
+				currentNode->setRight(newNode);
+				setNode = true;
+
 			}
-			//. . . other wise 
-			else if (newNode->getData() < currentNode->getData())
+			// else 
+			else
+				currentNode = currentNode->getRight();
+		}
+		//. . . other wise 
+		else if (newNode->getData() < currentNode->getData())
+		{
+			if (currentNode->getLeft() == nullptr)
 			{
-				if (currentNode->getLeft() == nullptr)
-				{
-					currentNode->setLeft(newNode);
-					//currentNode = currentNode->getLeft();
-				}
-				//Make that current node to be that current nodes left node
-				else
-					currentNode = currentNode->getLeft();
+				currentNode->setLeft(newNode);
+				setNode = true;
 			}
+			//Make that current node to be that current nodes left node
+			else
+				currentNode = currentNode->getLeft();
 		}
 	}
+	
 }
 
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
 {	
-	TreeNode<T>* currentNode = find(value);
+	TreeNode<T> currentParent = m_root;
 
-	if (currentNode->hasLeft() && currentNode->hasRight()) 
-		delete currentNode;
+	while (!(currentParent.getLeft()->getData() == value) || !(currentParent.getRight()->getData() == value))
+	{
+		if (currentParent.getData() > value)
+			currentParent = currentParent.getRight();
+		else
+			currentParent = currentParent.getLeft();
+	}
+		
 	
 }
 
 template<typename T>
 inline TreeNode<T>* BinaryTree<T>::find(T value)
 {
+
 	//Creats a variable easly exchange from the root
 	TreeNode<T>* currentNode = m_root;
 
