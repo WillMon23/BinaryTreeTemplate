@@ -6,7 +6,7 @@ class TreeNode
 public:
 	TreeNode() { m_value = 0, m_left = nullptr, m_right = nullptr; };
 	TreeNode(T value) { m_value = value, m_left = nullptr, m_right = nullptr; };
-	~TreeNode() { delete m_right, m_left; };
+	~TreeNode() { delete m_right; m_left; };
 
 	/// <summary>
 	/// Returns whether or not this node has a left child
@@ -68,13 +68,13 @@ inline void TreeNode<T>::draw(int x, int y, bool selected)
 	sprintf(buffer, "%d", m_value);
 
 	//Draws the circle to represent the node
-	DrawCircle(x, y, 30, YELLOW);
+	DrawCircle(x, y, 28, YELLOW);
 
 	//If the the node is the current selected node change its color.
 	if (selected)
-		DrawCircle(x, y, 28, GRAY);
+		DrawCircle(x, y, 25, GRAY);
 	else
-		DrawCircle(x, y, 28, DARKPURPLE);
+		DrawCircle(x, y, 25, DARKPURPLE);
 
 	//Draw the value of the node inside its circle
 	DrawText(buffer, x - 12, y - 12, 12, WHITE);

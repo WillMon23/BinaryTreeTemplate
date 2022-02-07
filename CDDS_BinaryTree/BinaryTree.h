@@ -113,9 +113,6 @@ inline void BinaryTree<T>::insert(T value)
 
 	//Creats a new node that is going to be inserted 
 	TreeNode<T>* newNode = new TreeNode<T>(value);
-
-	if (find(value)->getData() == value)
-		return;
 	
 	//Creats a new current node from the root of the tree 
 	TreeNode<T>* currentNode = m_root;
@@ -166,17 +163,34 @@ inline void BinaryTree<T>::insert(T value)
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
 {	
-	TreeNode<T> currentParent = m_root;
+	TreeNode<T>* currentParent = m_root;
 
-	while (!(currentParent.getLeft()->getData() == value) || !(currentParent.getRight()->getData() == value))
+	TreeNode<T>* foundNode = find(value);
+
+	if (!foundNode->hasRight() && !foundNode->hasLeft())
 	{
-		if (currentParent.getData() > value)
-			currentParent = currentParent.getRight();
-		else
-			currentParent = currentParent.getLeft();
+		delete[] foundNode;
+		foundNode = nullptr;
+		return;
 	}
-		
-	
+
+
+	while (!(currentParent->getLeft()->getData() == value) || !(currentParent->getRight()->getData() == value))
+	{
+		if (currentParent->getData() > value)
+			currentParent = currentParent->getRight();
+		else
+			currentParent = currentParent->getLeft();
+	}
+
+	if (!foundNode->hasLeft() && !foundNode->hasRight())
+		delete[] foundNode;
+	else {
+		if (findNode(value, foundNode, currentParent))
+		{
+
+		}
+	}
 }
 
 template<typename T>
@@ -191,12 +205,16 @@ inline TreeNode<T>* BinaryTree<T>::find(T value)
 	{
 		//If the value in the current node is greater then the value 
 		if (currentNode->getData() > value)
-			//Make that currrentNode to be that node to the left of the currnt node
-			currentNode = currentNode->getLeft();
+		{
+			if (currentNode->hasLeft())
+				//Make that currrentNode to be that node to the left of the currnt node
+				currentNode = currentNode->getLeft();
+		}
 		// else. . .
 		else
-			//Make that currrentNode to be that node to the right of the currnt node
-			currentNode = currentNode->getRight();
+			if (currentNode->hasRight())
+				//Make that currrentNode to be that node to the right of the currnt node
+				currentNode = currentNode->getRight();
 	}
 
 	return currentNode;

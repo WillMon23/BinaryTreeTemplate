@@ -35,16 +35,16 @@ int main(int argc, char* argv[])
 
         GuiSetStyle(TEXTBOX, TEXT_ALIGNMENT, GUI_TEXT_ALIGN_CENTER);
 
-        if (GuiValueBox(Rectangle{ 25, 25, 125, 30 }, NULL, &valueBoxValue, 0, 100, valueBoxEditMode)) valueBoxEditMode = !valueBoxEditMode;
+        if (GuiValueBox(Rectangle{ 525, 25, 125, 30 }, NULL, &valueBoxValue, 0, 100, valueBoxEditMode)) valueBoxEditMode = !valueBoxEditMode;
 
-        if (GuiButton(Rectangle{ 160, 25, 125, 30 }, GuiIconText(RICON_OK_TICK, "Insert")))
+        if (GuiButton(Rectangle{ 660, 25, 125, 30 }, GuiIconText(RICON_OK_TICK, "Insert")))
         {
             // Implement the code to insert valueBoxValue into your binary tree here! 
             binaryTree.insert(valueBoxValue);
             selectedNode = binaryTree.find(valueBoxValue);
         }
 
-        if (GuiButton(Rectangle{ 160, 60, 125, 30 }, GuiIconText(RICON_OK_TICK, "Remove")))
+        if (GuiButton(Rectangle{ 660, 60, 125, 30 }, GuiIconText(RICON_OK_TICK, "Remove")))
         {
             // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
             binaryTree.remove(valueBoxValue);
@@ -52,10 +52,12 @@ int main(int argc, char* argv[])
 
         // draw the binary tree
         binaryTree.draw(selectedNode);
+
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
 
+    
     // De-Initialization
     //--------------------------------------------------------------------------------------   
     CloseWindow();        // Close window and OpenGL context
