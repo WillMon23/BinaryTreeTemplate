@@ -211,20 +211,20 @@ inline void BinaryTree<T>::remove(T value)
 	bool parentFound = false;
 
 	//while the parent node is not found 
-	while (!parentFound)
+	while (true)
 	{
-		/*if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())
+		if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())
 		{
+			delete m_root;
 			m_root = nullptr;
 			return;
-		}*/
+		}
 
 		if (currentNode->hasLeft())
 		{
 			if (currentNode->getLeft()->getData() == value)
-			{
-				parentNode = currentNode;
-				parentFound = true;
+			{ 
+				parentNode = currentNode;               
 				break;
 			}
 		}
@@ -248,6 +248,31 @@ inline void BinaryTree<T>::remove(T value)
 			currentNode = currentNode->getLeft();
 	}
 
+	if (!childNode->hasLeft() && !childNode->hasRight())
+	{
+
+		if (parentNode->hasLeft())
+		{
+			if (parentNode->getLeft()->getData() == value)
+				parentNode->setLeft(nullptr);
+		}
+
+		else if (parentNode->hasRight())
+		{
+			if (parentNode->getRight()->getData() == value)
+				parentNode->setRight(nullptr);
+		}
+		return;
+	}
+
+	else if (childNode->hasLeft() && childNode->hasRight());
+	{
+		while (currentNode->hasLeft())
+			currentNode = currentNode->getLeft();
+		childNode->setData(currentNode->getData());
+		
+	}
+
 	if (parentNode->hasLeft()) {
 		if (parentNode->getLeft()->getData() == value)
 		{
@@ -269,23 +294,6 @@ inline void BinaryTree<T>::remove(T value)
 				return;
 			}
 		}
-	}
-
-	if (!childNode->hasLeft() && !childNode->hasRight())
-	{
-
-		if (parentNode->hasLeft())
-		{
-			if (parentNode->getLeft()->getData() == value)
-				parentNode->setLeft(nullptr);
-		}
-
-		else if (parentNode->hasRight())
-		{
-			if (parentNode->getRight()->getData() == value)
-				parentNode->setRight(nullptr);
-		}
-		return;
 	}
 }
 
