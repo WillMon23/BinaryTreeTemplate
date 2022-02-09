@@ -59,7 +59,9 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 	TreeNode<T>* currentNode = m_root;
 	
 	//Creats a parent holder node 
-	TreeNode<T>* parentNode;
+	TreeNode<T>* parentNode = nullptr;
+
+	TreeNode<T>* childNode = find(searchValue);
 	
 	//Checks to see if a parent has been found 
 	bool parentFound = false;
@@ -67,18 +69,21 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 	//while the parent node is not found 
 	while (!parentFound)
 	{
+		//Comparess values to see if the value that's being tried to be removed 
+		//is larger or smaller then the current nodes value 
 		if (currentNode->getData() > searchValue)
 			currentNode = currentNode->getRight();
 		else
 			currentNode = currentNode->getLeft();
 
-		if (currentNode->getLeft()->getData() == searchValue || currentNode->getLeft()->getData())
+		if (currentNode->getLeft()->getData() == searchValue || currentNode->getLeft()->getData() == searchValue)
 		{
-			parentFound = currentNode;
+			parentNode = currentNode;
 			parentFound = true;
 		}
 	}
-		if (find(searchValue) == nodeFound) && parentNode == nodeParent)
+
+	if (childNode == nodeFound && parentNode == nodeParent)
 		return true;
 
 	return false;
@@ -160,7 +165,7 @@ inline void BinaryTree<T>::insert(T value)
 		if (newNode->getData() > currentNode->getData())
 		{
 			//Checks if there is a nullptr 
-			if (currentNode->getRight() == nullptr || !(currentNode->getRight()->getData() == value))
+			if (currentNode->getRight() == nullptr)
 			{//sets the right location to be the new node 
 				currentNode->setRight(newNode);
 				setNode = true;
@@ -173,7 +178,7 @@ inline void BinaryTree<T>::insert(T value)
 		//. . . other wise 
 		else if (newNode->getData() < currentNode->getData())
 		{
-			if (currentNode->getLeft() == nullptr || !(currentNode->getLeft()->getData() == value))
+			if (currentNode->getLeft() == nullptr )
 			{
 				currentNode->setLeft(newNode);
 				setNode = true;
@@ -182,6 +187,12 @@ inline void BinaryTree<T>::insert(T value)
 			else
 				currentNode = currentNode->getLeft();
 		}
+		
+		//Checks to see if the value being passed in resambles that of the 
+		//currentnodes value
+		if (currentNode->getData() == value)
+			//breaks out of the loops if so
+			break;
 	}
 	
 }
@@ -189,34 +200,48 @@ inline void BinaryTree<T>::insert(T value)
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
 {	
-	TreeNode<T>* currentParent = m_root;
+	TreeNode<T>* currentNode = m_root;
 
-	TreeNode<T>* foundNode = find(value);
+	//Creats a parent holder node 
+	TreeNode<T>* parentNode = nullptr;
 
-	if (!foundNode->hasRight() && !foundNode->hasLeft())
+	TreeNode<T>* childNode = find(value);
+
+	//Checks to see if a parent has been found 
+	bool parentFound = false;
+
+	//while the parent node is not found 
+	while (!parentFound)
 	{
-		delete[] foundNode;
-		foundNode = nullptr;
-		return;
-	}
-
-
-	while (!(currentParent->getLeft()->getData() == value) || !(currentParent->getRight()->getData() == value))
-	{
-		if (currentParent->getData() > value)
-			currentParent = currentParent->getRight();
-		else
-			currentParent = currentParent->getLeft();
-	}
-
-	if (!foundNode->hasLeft() && !foundNode->hasRight())
-		delete[] foundNode;
-	else {
-		if (findNode(value, foundNode, currentParent))
+		if (currentNode->getLeft()->getData() == value || currentNode->getRight()->getData() == value)
 		{
-
+			parentNode = currentNode;
+			parentFound = true;
+			break;
 		}
+
+		//Comparess values to see if the value that's being tried to be removed 
+		//is larger or smaller then the value nodes value 
+		if (currentNode->getData() < value)
+			currentNode = currentNode->getRight();
+		else
+			currentNode = currentNode->getLeft();
 	}
+
+		bool resp = !childNode->hasLeft();
+		bool resp1 = !childNode->hasRight();
+
+		if (!childNode->hasLeft() ||!childNode->hasRight())
+		{
+			if (parentNode->getLeft()->getData() == value)
+				parentNode->setLeft(nullptr);
+
+			else if (parentNode->getRight()->getData() == value)
+				parentNode->setRight(nullptr);
+
+			delete childNode;
+			return;
+		}
 }
 
 template<typename T>
