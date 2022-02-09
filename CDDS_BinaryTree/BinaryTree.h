@@ -213,11 +213,31 @@ inline void BinaryTree<T>::remove(T value)
 	//while the parent node is not found 
 	while (!parentFound)
 	{
-		if (currentNode->getLeft()->getData() == value || currentNode->getRight()->getData() == value)
+		/*if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())
 		{
-			parentNode = currentNode;
-			parentFound = true;
-			break;
+			m_root = nullptr;
+			return;
+		}*/
+
+		if (currentNode->hasLeft())
+		{
+			if (currentNode->getLeft()->getData() == value)
+			{
+				parentNode = currentNode;
+				parentFound = true;
+				break;
+			}
+		}
+		
+
+		else if (currentNode->hasRight())
+		{
+			if (currentNode->getRight()->getData() == value)
+			{
+				parentNode = currentNode;
+				parentFound = true;
+				break;
+			}
 		}
 
 		//Comparess values to see if the value that's being tried to be removed 
@@ -228,20 +248,45 @@ inline void BinaryTree<T>::remove(T value)
 			currentNode = currentNode->getLeft();
 	}
 
-		bool resp = !childNode->hasLeft();
-		bool resp1 = !childNode->hasRight();
+	if (parentNode->hasLeft()) {
+		if (parentNode->getLeft()->getData() == value)
+		{
+			if (childNode->hasLeft() && !childNode->hasRight())
+			{
+				parentNode->setLeft(childNode->getLeft());
+				return;
+			}
+		}
+	}
+	if (parentNode->hasRight())
+	{
+		if (parentNode->getRight()->getData() == value)
+		{
+			if (childNode->hasRight() && !childNode->hasLeft())
+			{
+				parentNode->setRight(childNode->getRight());
 
-		if (!childNode->hasLeft() ||!childNode->hasRight())
+				return;
+			}
+		}
+	}
+
+	if (!childNode->hasLeft() && !childNode->hasRight())
+	{
+
+		if (parentNode->hasLeft())
 		{
 			if (parentNode->getLeft()->getData() == value)
 				parentNode->setLeft(nullptr);
-
-			else if (parentNode->getRight()->getData() == value)
-				parentNode->setRight(nullptr);
-
-			delete childNode;
-			return;
 		}
+
+		else if (parentNode->hasRight())
+		{
+			if (parentNode->getRight()->getData() == value)
+				parentNode->setRight(nullptr);
+		}
+		return;
+	}
 }
 
 template<typename T>
