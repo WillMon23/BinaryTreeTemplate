@@ -200,6 +200,10 @@ inline void BinaryTree<T>::insert(T value)
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
 {	
+
+	if (m_root == nullptr)
+		return;
+
 	TreeNode<T>* currentNode = m_root;
 
 	//Creats a parent holder node 
@@ -213,10 +217,18 @@ inline void BinaryTree<T>::remove(T value)
 	//while the parent node is not found 
 	while (true)
 	{
+		
+
 		if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())
 		{
 			delete m_root;
 			m_root = nullptr;
+			return;
+		}
+
+		if (m_root->getData() == value && (m_root->hasLeft() || m_root->hasRight())) 
+		{
+			m_root = m_root->getLeft();
 			return;
 		}
 
@@ -228,7 +240,6 @@ inline void BinaryTree<T>::remove(T value)
 				break;
 			}
 		}
-		
 
 		else if (currentNode->hasRight())
 		{
@@ -250,7 +261,6 @@ inline void BinaryTree<T>::remove(T value)
 
 	if (!childNode->hasLeft() && !childNode->hasRight())
 	{
-
 		if (parentNode->hasLeft())
 		{
 			if (parentNode->getLeft()->getData() == value)
@@ -267,9 +277,6 @@ inline void BinaryTree<T>::remove(T value)
 
 	else if (childNode->hasLeft() && childNode->hasRight());
 	{
-		while (currentNode->hasLeft())
-			currentNode = currentNode->getLeft();
-		childNode->setData(currentNode->getData());
 		
 	}
 
@@ -283,6 +290,7 @@ inline void BinaryTree<T>::remove(T value)
 			}
 		}
 	}
+
 	if (parentNode->hasRight())
 	{
 		if (parentNode->getRight()->getData() == value)
