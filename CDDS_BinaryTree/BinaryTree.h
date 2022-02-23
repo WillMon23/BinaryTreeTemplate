@@ -226,12 +226,6 @@ inline void BinaryTree<T>::remove(T value)
 			return;
 		}
 
-		if (m_root->getData() == value && (m_root->hasLeft() || m_root->hasRight())) 
-		{
-			m_root = m_root->getLeft();
-			return;
-		}
-
 		if (currentNode->hasLeft())
 		{
 			if (currentNode->getLeft()->getData() == value)
@@ -246,10 +240,11 @@ inline void BinaryTree<T>::remove(T value)
 			if (currentNode->getRight()->getData() == value)
 			{
 				parentNode = currentNode;
-				parentFound = true;
 				break;
 			}
 		}
+
+		if(currentNode)
 
 		//Comparess values to see if the value that's being tried to be removed 
 		//is larger or smaller then the value nodes value 
