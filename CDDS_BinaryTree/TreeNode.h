@@ -84,20 +84,20 @@ template<typename T>
 inline bool TreeNode<T>::hasLeft()
 {
 	//if there is node in the left node 
-	if (m_left != nullptr)
-		return true;
+	if (getLeft() == nullptr)
+		return false;
 	//. . . other wise 
-	return false;
+	return true;
 }
 
 template<typename T>
 inline bool TreeNode<T>::hasRight()
 {
 	//if there is node in the right node 
-	if(m_right != nullptr)
-		return true;
+	if(getRight() == nullptr)
+		return false;
 	//. . . other wise 
-	return false;
+	return true;
 }
 
 template<typename T>
