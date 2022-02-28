@@ -227,12 +227,16 @@ inline void BinaryTree<T>::remove(T value)
 	{
 		//delets the node 
 		delete m_root;
+		//sets the root to be a nullptr 
 		m_root = nullptr;
+		//then it leaves the function
 		return;
 	}
 
+	//If the value is the same as the root but it does not have a right node
 	else if (m_root->getData() == value && m_root->hasLeft() && !m_root->hasRight())
 	{
+		
 		m_root = m_root->getLeft();
 		return;
 	}
