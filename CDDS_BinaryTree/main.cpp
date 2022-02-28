@@ -61,8 +61,6 @@ int main(int argc, char* argv[])
 
 
 
-
-
         // draw the binary tree
         binaryTree.draw(selectedNode);
 

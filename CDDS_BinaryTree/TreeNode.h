@@ -4,7 +4,7 @@ template<typename T>
 class TreeNode
 {
 public:
-	TreeNode() { m_value = 0, m_left = nullptr, m_right = nullptr; };
+	TreeNode() { m_left = nullptr, m_right = nullptr; };
 	TreeNode(T value) { m_value = value, m_left = nullptr, m_right = nullptr; };
 	~TreeNode() { delete m_right; m_left; };
 
@@ -84,20 +84,20 @@ template<typename T>
 inline bool TreeNode<T>::hasLeft()
 {
 	//if there is node in the left node 
-	if (getLeft() == nullptr)
-		return false;
+	if (getLeft() != nullptr)
+		return true;
 	//. . . other wise 
-	return true;
+	return false;
 }
 
 template<typename T>
 inline bool TreeNode<T>::hasRight()
 {
 	//if there is node in the right node 
-	if(getRight() == nullptr)
-		return false;
+	if(getRight() != nullptr)
+		return true;
 	//. . . other wise 
-	return true;
+	return false;
 }
 
 template<typename T>
