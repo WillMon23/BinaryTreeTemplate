@@ -95,10 +95,10 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 				currentNode = currentNode->getLeft();
 		}
 
-		//If current has a right node 
+		//If current has a left node 
 		if (currentNode->hasLeft())
 		{
-			//Compares the value of the data 
+			//Compares the value of the current nodes left node data and the value in question 
 			if (currentNode->getLeft()->getData() == searchValue)
 			{
 				//Set the parent to be the current node 
@@ -107,22 +107,25 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 				parentFound = true;
 			}
 		}
-
-
+		//if else the current node has a right 
 		else if (currentNode->hasRight())
 		{
+			//Compares the value of the current nodes right node data and the value in question 
 			if (currentNode->getRight()->getData() == searchValue)
 			{
+				//Set the parent to be the current node
 				parentNode = currentNode;
+				//Sets parentFound to be true
 				parentFound = true;
 
 			}
 		}
 	}
-
+	//If the child node equals the node found  and the parent node equals the parent in the argument 
 	if (childNode == nodeFound && parentNode == nodeParent)
+		//Return True
 		return true;
-
+	//Else false
 	return false;
 }
 
@@ -206,7 +209,6 @@ inline void BinaryTree<T>::insert(T value)
 			{//sets the right location to be the new node 
 				currentNode->setRight(newNode);
 				setNode = true;
-
 			}
 			// else 
 			else
@@ -215,14 +217,15 @@ inline void BinaryTree<T>::insert(T value)
 		//. . . other wise if the new node data is less then the current node data . . . 
 		else if (newNode->getData() < currentNode->getData())
 		{
-			//. . . if the 
+			//. . . if the current node does not has a left node 
 			if (!currentNode->hasLeft())
 			{
+				//We set this current node left node new node  
 				currentNode->setLeft(newNode);
 				setNode = true;
 			}
-			//Make that current node to be that current nodes left node
 			else
+				//Make that current node to be that current nodes left node
 				currentNode = currentNode->getLeft();
 		}
 		
@@ -232,42 +235,45 @@ inline void BinaryTree<T>::insert(T value)
 			//breaks out of the loops if so
 			break;
 	}
-	
 }
 
 template<typename T>
 inline void BinaryTree<T>::remove(T value)
-{	
-	//checks if the root is empty 
-	if (m_root == nullptr)
-		//Leaves the funtion 
-		return;
-	//If the value is the same as the roots value and it does not have node attached 
-	if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())
-	{
-		//delets the node 
-		delete m_root;
-		//sets the root to be a nullptr 
-		m_root = nullptr;
-		//then it leaves the function
-		return;
-	}
-
-	//If the value is the same as the root but it does not have a right node
-	else if (m_root->getData() == value && m_root->hasLeft() && !m_root->hasRight())
-	{
-		
-		m_root = m_root->getLeft();
-		return;
-	}
-
-	else if (m_root->getData() == value && !m_root->hasLeft() && m_root->hasRight())
-	{
-		m_root = m_root->getRight();
-		return;
-	}
-
-
+{
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Deals with checking the values of the root first, In case the value im removing is the root //																						  //
+////////////////////////////////////////////////////////////////////////////////////////////////
+	//checks if the root is empty															  //
+	if (m_root == nullptr)																	  //
+		//Leaves the funtion 																  //
+		return;																				  //
+	//If the value is the same as the roots value and it does not have node attached 		  //
+	if (m_root->getData() == value && !m_root->hasLeft() && !m_root->hasRight())			  //
+	{																						  //
+		//delets the node 																	  //
+		delete m_root;																		  //
+		//sets the root to be a nullptr 													  //
+		m_root = nullptr;																	  //
+		//then it leaves the function														  //
+		return;																				  //
+	}																						  //
+																							  //
+	//If the value is the same as the root but it does not have a right node				  //
+	else if (m_root->getData() == value && m_root->hasLeft() && !m_root->hasRight())		  //
+	{																						  //
+		//																					  //
+		m_root = m_root->getLeft();															  //
+		return;																				  //
+	}																						  //
+																							  //
+	else if (m_root->getData() == value && !m_root->hasLeft() && m_root->hasRight())		  //
+	{																						  //
+		m_root = m_root->getRight();														  //
+		return;																				  //
+	}																						  //																						  //
+////////////////////////////////////////////////////////////////////////////////////////////////
+																							  //
+////////////////////////////////////////////////////////////////////////////////////////////////
 	TreeNode<T>* currentNode = m_root;
 
 	//Creats a parent holder node 
@@ -277,121 +283,160 @@ inline void BinaryTree<T>::remove(T value)
 
 	//Checks to see if a parent has been found 
 	bool parentFound = false;
-
+	// Also check to see if the childNode is pointing to a nullptr
 	if (childNode == nullptr)
+		//Just leavves the function
 		return;
 	
-
-	//while the parent node is not found 
-	while (currentNode != nullptr)
-	{
-
-		if (currentNode->hasLeft())
-		{
-			if (currentNode->getLeft()->getData() == value)
-			{ 
-				parentNode = currentNode;               
-				break;
-			}
-		}
-
-		else if (currentNode->hasRight())
-		{
-			if (currentNode->getRight()->getData() == value)
-			{
-				parentNode = currentNode;
-				break;
-			}
-		}
-
-		//Comparess values to see if the value that's being tried to be removed 
-		//is larger or smaller then the value nodes value 
-		if (currentNode->getData() < value)
-			currentNode = currentNode->getRight();
-		else
-			currentNode = currentNode->getLeft();
-	}
-
-	//Checks if the child is close to the root 
-	if (m_root->hasLeft())
-	{
-		if (m_root->getLeft()->getData() == childNode->getData())
-			parentNode = m_root;
-	}
-
-	else if (m_root->hasRight())
-	{
-		if(m_root->getRight()->getData() == childNode->getData())
-			parentNode = m_root;
-	}
-
-	if (!childNode->hasLeft() && !childNode->hasRight())
-	{
-		if (parentNode->hasLeft())
-		{
-			if (parentNode->getLeft()->getData() == value)
-				parentNode->setLeft(nullptr);
-		}
-
-		else if (parentNode->hasRight())
-		{
-			if (parentNode->getRight()->getData() == value)
-				parentNode->setRight(nullptr);
-		}
-		return;
-	}
-
-	else if (childNode->hasLeft() && childNode->hasRight())
-	{
-		parentNode = childNode;
-
-		if (childNode->hasRight())
-			currentNode = childNode->getRight();
-
-		if (!currentNode->hasLeft() && !currentNode->hasRight())
-		{
-			parentNode->setData(parentNode->getLeft()->getData());
-			parentNode->setLeft(nullptr);
-			return;
-		}
-
-		while (currentNode->hasLeft() || currentNode->hasRight())
-		{
-			parentNode = currentNode;
-			if (currentNode->hasLeft())
-			{
-				currentNode = currentNode->getLeft();
-				continue;
-			}
-
-			if (currentNode->hasRight())
-				currentNode = currentNode->getRight();
-		}
-
-		childNode->setData(currentNode->getData());
-		if (parentNode->hasLeft())
-			parentNode->setLeft(nullptr);
-		if (parentNode->hasRight())
-			parentNode->setRight(nullptr);
-		return;
-	}
-
-	else if (parentNode->hasLeft()) 
-	{
-		if (childNode->hasLeft() && !childNode->hasRight())
-			parentNode->setLeft(childNode->getLeft());
-
-		else
-			parentNode->setLeft(childNode->getRight());
-	}
-
-	else if (parentNode->hasRight())
-	{
-		if (!childNode->hasLeft() && childNode->hasRight())
-			parentNode->setRight(childNode->getRight());
-
-		else
-			parentNode->setRight(childNode->getRight());
+//////////////////////////////////////////////////////////////////////////////////////////////
+//Meant to look for the parent of the child 												//  
+//////////////////////////////////////////////////////////////////////////////////////////////
+	//while the parent node is not found 													//
+	do																						//
+	{																						//
+		//if the current node has a left node												//
+		if (currentNode->hasLeft())															//
+		{																					//
+			//if the current nodes to the left eqals the value in the argument 				//
+			if (currentNode->getLeft()->getData() == value)									//
+			{ 																				//
+				// That'll be considered the parent 										//
+				parentNode = currentNode;           										//
+				//Just incase it breaks out the loop right away								//
+				break;																		//
+			}																				//
+		}																					//
+		//If the cyrrent node has a left node 												//
+		if (currentNode->hasRight())														//
+		{																					//
+		//The current node right node data is equal to the value passed through the argument//
+			if (currentNode->getRight()->getData() == value)								//
+			{																				//
+				// Will consider the current node to be the parent							//
+				parentNode = currentNode;													//
+				break;																		//
+			}																				//
+		} 																					//
+																							//
+		//Comparess values the values that are before them by checking the node 			//
+		//Thats before them and if the value is greater then or lesser then the 			//
+		//That'll dictate wether or not the current node will be its left noded or right 	//
+		//node																				//
+		//if the current node data is smaller then the value								//
+		if (currentNode->getData() < value)													//
+			//Current node will equal the current nodes right node							//
+			currentNode = currentNode->getRight();											//
+		// other wise. . .																	//
+		else																				//
+			//Current node will equal the current nodes left node							//
+			currentNode = currentNode->getLeft();											//
+		//While the current node is not pointing to null									//
+	} while (currentNode != nullptr);														//
+//////////////////////////////////////////////////////////////////////////////////////////////
+//Checks to see if the child has no nodes attached to it 									//
+//////////////////////////////////////////////////////////////////////////////////////////////
+	//If the child has no left or right nodes 												//
+	if (!childNode->hasLeft() && !childNode->hasRight())									//
+	{																						//
+		//If the parent has a left node 													//
+		if (parentNode->hasLeft())															//
+		{																					//
+			//If the parents left node data is that of the values 							//
+			if (parentNode->getLeft()->getData() == value)									//
+				// Set that value to be a nullptr											//
+				parentNode->setLeft(nullptr);												//
+		}																					//
+		//If the parent has a right node 													//
+		if (parentNode->hasRight())															//
+		{																					//
+			//If the parents right node data is that of the values 							//
+			if (parentNode->getRight()->getData() == value)									//
+				// Set that value to be a nullptr											//
+				parentNode->setRight(nullptr);												//
+		}																					//
+		//Leave the function																//
+		return;																				//
+	}																						//
+//////////////////////////////////////////////////////////////////////////////////////////////
+//Checks to see if the child has two nodes attached to it 									//		
+//////////////////////////////////////////////////////////////////////////////////////////////
+	//If there is left node ans a right node for the child									//
+	else if (childNode->hasLeft() && childNode->hasRight())									//
+	{																						//
+		//Sets the currrent node to be the right node of the child							//
+		currentNode = childNode->getRight();												//
+																							//
+		//If the current node does not have a node attached to it 							//
+		if (!currentNode->hasLeft() && !currentNode->hasRight())							//
+		{																					//
+			//Sets the child node data to be that current nodes data 						//
+			childNode->setData(currentNode->getData());										//
+			//Removed that right node 														//
+			childNode->setRight(nullptr);													//
+			//LEaves the function															//
+			return;																			//
+		}																					//
+																							//
+		//While the current node is has aleft node 											//
+		while (currentNode->hasLeft())														//
+		{																					//
+			//If that current node has a left node 											//
+			if (currentNode->hasLeft())														//
+			{																				//
+				//Set the current node to be the current nodes left node 					//
+				currentNode = currentNode->getLeft();										//
+				//Goes through the loop from the start										//
+				continue;																	//
+			}																				//
+			//If the current has a left 													//
+			if (currentNode->hasRight())													//
+			{																				//
+				//Set the current node to be the current nodes right node 					//
+				currentNode = currentNode->getRight();										//
+			}																				//
+		}																					//
+																							//
+		//set the child node data to be what the data in the current node is 				//
+		childNode->setData(currentNode->getData());											//
+		if (currentNode->hasLeft())															//
+			//Sets the left node to point to nullptr										//
+			currentNode->setLeft(nullptr);													//
+		//If the current node has a right node 												//
+		else if (currentNode->hasRight())													//
+			//Set current node to point to a nullptr										//
+			currentNode->setRight(nullptr);													//
+		//Leaves the function 																//
+		return;																				//
+	}																						//
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Once the check has gone through it checks if it only has a left node 					//
+//////////////////////////////////////////////////////////////////////////////////////////////
+	//If the parent node has a left node													//
+	else if (parentNode->hasLeft()) 														//
+	{																						//
+		// the child node has a left node but not a right node 								//
+		if (childNode->hasLeft() && !childNode->hasRight())									//
+			//Set the parent left node to be that node from the child to the left 			//
+			parentNode->setLeft(childNode->getLeft());										//
+																							//
+		else																				//
+			//Set the parent left node to be that node from the child to the right			//
+			parentNode->setLeft(childNode->getRight());										//
+	}																						//
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Once the check has gone through it checks if it only has a right node 					//
+//////////////////////////////////////////////////////////////////////////////////////////////
+	//If the parent node has a left node													//
+	else if (parentNode->hasRight())														//
+	{																						//
+		// the child node has a right node but not a left node								//
+		if (!childNode->hasLeft() && childNode->hasRight())									//
+			//Set the parent left node to be that node from the child to the right 			//
+			parentNode->setRight(childNode->getRight());									//
+																							//
+		else																				//
+			//Set the parent left node to be that node from the child to the left			//
+			parentNode->setRight(childNode->getRight());									//
 	}
 	
 }
