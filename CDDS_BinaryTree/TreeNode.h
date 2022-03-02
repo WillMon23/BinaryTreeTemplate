@@ -44,7 +44,7 @@ public:
 	void setLeft(TreeNode<T>* node) { m_left = node; };
 
 	/// <summary>
-	/// Sets the left child of this node to be the given node
+	/// Sets the right child of this node to be the given node
 	/// </summary>
 	/// <param name="node">The node to set as this nodes new child</param>
 	void setRight(TreeNode<T>* node) { m_right = node; };

@@ -32,7 +32,9 @@ public:
 	/// </summary>
 	/// <param name="value">The value of the node to search for</param>
 	TreeNode<T>* find(T value);
-
+	/// <summary>
+	/// Gets displaces the value to the tree
+	/// </summary>
 	void draw(TreeNode<T>* selected = nullptr);
 
 private:
@@ -45,6 +47,9 @@ private:
 	/// <returns>Whether or not a node matching the value could be found</returns>
 	bool findNode(T searchValue, TreeNode<T>*& nodeFound, TreeNode<T>*& nodeParent);
 
+	/// <summary>
+	/// Displays  the UI in cloraltion to where the node is in the tree taking in the locaction 
+	/// </summary>
 	void draw(TreeNode<T>* currentNode, int x, int y, int horizontalSpacing, TreeNode<T>* selected = nullptr);
 
 	TreeNode<T>* m_root = nullptr;
@@ -193,10 +198,11 @@ inline void BinaryTree<T>::insert(T value)
 			else
 				currentNode = currentNode->getRight();
 		}
-		//. . . other wise 
+		//. . . other wise if the new node data is less then the current node data . . . 
 		else if (newNode->getData() < currentNode->getData())
 		{
-			if (currentNode->getLeft() == nullptr )
+			//. . . if the 
+			if (!currentNode->hasLeft())
 			{
 				currentNode->setLeft(newNode);
 				setNode = true;
