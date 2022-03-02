@@ -78,17 +78,32 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 		//is larger or smaller then the current nodes value 
 		if (!currentNode->hasLeft() || !currentNode->hasRight())
 			break;
-
+		//if the current node data was greater then the the surched value 
 		if (currentNode->getData() > searchValue)
-			currentNode = currentNode->getRight();
+		{
+			//If current has a right node 
+			if (currentNode->hasRight())
+				// current node would now equal the current right node 
+				currentNode = currentNode->getRight();
+		}
+		//else 
 		else
-			currentNode = currentNode->getLeft();
+		{
+			//If current has a left node 
+			if (currentNode->hasLeft())
+				// current node would now equal the current left node 
+				currentNode = currentNode->getLeft();
+		}
 
+		//If current has a right node 
 		if (currentNode->hasLeft())
 		{
+			//Compares the value of the data 
 			if (currentNode->getLeft()->getData() == searchValue)
 			{
+				//Set the parent to be the current node 
 				parentNode = currentNode;
+				//Sets parentFound to be true
 				parentFound = true;
 			}
 		}
@@ -103,7 +118,6 @@ inline bool BinaryTree<T>::findNode(T searchValue, TreeNode<T>*& nodeFound, Tree
 
 			}
 		}
-
 	}
 
 	if (childNode == nodeFound && parentNode == nodeParent)
@@ -296,6 +310,19 @@ inline void BinaryTree<T>::remove(T value)
 			currentNode = currentNode->getRight();
 		else
 			currentNode = currentNode->getLeft();
+	}
+
+	//Checks if the child is close to the root 
+	if (m_root->hasLeft())
+	{
+		if (m_root->getLeft()->getData() == childNode->getData())
+			parentNode = m_root;
+	}
+
+	else if (m_root->hasRight())
+	{
+		if(m_root->getRight()->getData() == childNode->getData())
+			parentNode = m_root;
 	}
 
 	if (!childNode->hasLeft() && !childNode->hasRight())
